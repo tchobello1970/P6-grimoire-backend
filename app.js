@@ -1,9 +1,19 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const stuffRoutes = require('./routes/stuff');
 
 const app = express();
 
+// Middleware to parse JSON requests
 app.use(express.json());
 
+// Connect to MongoDB
+
+mongoose.connect('mongodb+srv://victorhugo:victorhugo1802@books.uwcylgp.mongodb.net/vieuxgrimoire?retryWrites=true&w=majority&appName=books')
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch((error) => console.error('Connexion à MongoDB échouée !', error));
+
+// Set headers to enable CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -11,36 +21,8 @@ app.use((req, res, next) => {
     next();
   });
 
-/*
+// Define routes
+app.use('/api/stuff', stuffRoutes);
 
-app.post('/api/stuff', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-      message: 'Objet créé !'
-    });
-  });
-*/
-/*
-app.get('/api/stuff', (req, res, next) => {
-    const stuff = [
-      {
-        _id: 'oeihfzeoi',
-        title: 'Mon premier objet',
-        description: 'Les infos de mon premier objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 4900,
-        userId: 'qsomihvqios',
-      },
-      {
-        _id: 'oeihfzeomoihi',
-        title: 'Mon deuxième objet',
-        description: 'Les infos de mon deuxième objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 2900,
-        userId: 'qsomihvqios',
-      },
-    ];
-    res.status(200).json(stuff);
-  });
-*/
-  module.exports = app;
+// Export the app module
+module.exports = app;
