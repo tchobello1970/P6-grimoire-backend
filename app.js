@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const stuffRoutes = require('./routes/stuff');
+const bookRoutes = require('./routes/stuff');
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   });
 
 // Define routes
-app.use('/api/stuff', stuffRoutes);
+app.use('/api/books', bookRoutes);
 
 // Export the app module
 module.exports = app;
