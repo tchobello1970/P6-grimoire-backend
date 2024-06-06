@@ -13,8 +13,11 @@ exports.getOneBook = (req, res, next) => {
 };
 
 
-exports.createBook = (req, res, next) => {
-  const book = new Book({
+/*exports.createBook = (req, res, next) => {
+  console.log('req.file:', req.file);  // Journalisation pour vérifier req.file
+  console.log('req.body:', req.body);  // Journalisation pour vérifier req.body
+
+  const newBook = new Book({
     userId: req.body.userId,
     title: req.body.title,
     author: req.body.author,
@@ -25,12 +28,29 @@ exports.createBook = (req, res, next) => {
       userId: req.body.userId,
       grade: req.body.grade
   }],
-    averageRating: averageRating
+    averageRating: req.body.grade
   });
-  book.save()
+  newBook.save()
     .then(() => res.status(201).json({ message: 'Post saved successfully!' }))
     .catch(error => res.status(400).json({ error }));
+};*/
+
+
+exports.createBook = (req, res, next) => {
+  const bookObject = JSON.parse(req.body.book);
+  delete bookObject._id;
+  delete bookObject._userId;
+  const book = new Book({
+      ...bookObject,
+      userId: req.auth.userId,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  });
+
+  book.save()
+  .then(() => { res.status(201).json({message: 'Livre enregistré !'})})
+  .catch(error => { res.status(400).json( { error })})
 };
+
 
 exports.modifyBook = (req, res, next) => {
   const updatedBook = new Book({
