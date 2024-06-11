@@ -1,6 +1,7 @@
 // Importation des modules nécessaires
 const bcrypt = require('bcrypt');  // Bibliothèque pour le hachage des mots de passe
 const jwt = require('jsonwebtoken');  // Bibliothèque pour la création et la vérification de JSON Web Tokens
+
 const User = require('../models/User');  // Modèle utilisateur
 
 // Fonction pour l'inscription d'un utilisateur
@@ -41,7 +42,7 @@ exports.login = (req, res, next) => {
                     res.status(200).json({
                         userId: user._id,  // ID de l'utilisateur
                         token: jwt.sign(
-                            { userId: user._id },  // Payload du token
+                            { userId: user._id },  // les données à encoder (un autre utilisateur ne peut pas modifier)
                             'RANDOM_TOKEN_SECRET',  // Clé secrète pour signer le token
                             { expiresIn: '24h' }  // Expiration du token
                         )

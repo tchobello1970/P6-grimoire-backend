@@ -16,6 +16,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ 
     storage: storage,
+    limits: { fileSize: 2 * 1024 * 1024 },
     fileFilter: (req, file, callback) => {
         const isValid = MIME_TYPES[file.mimetype];
         const error = isValid ? null : new Error('Invalid mime type');
@@ -36,11 +37,10 @@ const multer_green = (req, res, next) => {
 
         const name = req.file.originalname.split(' ').join('_').split('.')[0];
         const finalName = `${name}_${Date.now()}.webp`;
-        console.log('finalName');
-        console.log(finalName);
 
         sharp(req.file.buffer)
             .webp({ quality: 80 })
+            .resize({ width: 1024, height: 1024, fit: 'inside' })
             .toFile(`images/${finalName}`, (err, info) => {
                 if (err) {
                     return next(err);
@@ -53,35 +53,3 @@ const multer_green = (req, res, next) => {
 };
 
 module.exports = multer_green;
-
-/*
-// Configuration de multer pour le stockage des fichiers sur le disque
-const storage = multer.diskStorage({
-    // Définition du dossier de destination pour les fichiers uploadés
-    destination: (req, file, callback) => {
-        console.log('Multer destination function called');
-        callback(null, 'images');
-    },
-    // Définition du nom du fichier uploadé
-    filename: (req, file, callback) => {
-        console.log('Multer filename function called');
-        // Remplacement des espaces par des underscores dans le nom du fichier original
-        const name = file.originalname.split(' ').join('_').split('.')[0];
-        // Récupération de l'extension du fichier à partir de son type MIME
-        const extension = MIME_TYPES[file.mimetype];
-        // Génération du nom final du fichier avec un timestamp pour éviter les conflits de nom
-        if (!extension) {
-            console.error('Invalid file type');
-            return callback(new Error('Invalid file type'));
-        }
-        const finalName = name + Date.now() + '.webp';
-        console.log('Generated filename:', finalName);
-
-        callback(null, finalName);
-    }
-});
-
-
-// Exportation du middleware multer configuré pour gérer un seul fichier avec le champ 'image'
-module.exports = multer({ storage: storage }).single('image');
-*/

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// prevalidation to get better error messages than mongoDB ones.
 const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema({

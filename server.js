@@ -1,4 +1,6 @@
+// on importe le package qui permet de créer un serveur
 const http = require('http');
+// on importe l'application Express
 const app = require('./app');
 
 const normalizePort = val => {
@@ -11,9 +13,13 @@ const normalizePort = val => {
   }
   return false;
 };
+
+// si l'environnement de dév nous envoie un port, on l'utilise sinon, on prend 3000
 const port = normalizePort(process.env.PORT ||'3030');
+// on doit aussi définir quel port l'app doit écouter
 app.set('port', port);
 
+//recherche les différentes erreurs lors du démaraage du serveur et après. 
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -34,6 +40,7 @@ const errorHandler = error => {
   }
 };
 
+//on créé le serveur
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
@@ -43,4 +50,5 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
+// on écoute le port qui va nous faire des appels.
 server.listen(port);
