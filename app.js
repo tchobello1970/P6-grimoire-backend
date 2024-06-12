@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 
-// Middleware pour servir des fichiers statiques (images)
+// Middleware pour servir des fichiers statiques (images) avec multer
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Export the app module

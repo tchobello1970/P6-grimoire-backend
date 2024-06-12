@@ -1,9 +1,7 @@
-// Importation du module multer pour la gestion des fichiers uploadés
 const multer = require('multer');
 const sharp = require('sharp');
 const fs = require('fs');
 
-// Définition des types MIME acceptés et de leurs extensions associées
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
@@ -11,7 +9,6 @@ const MIME_TYPES = {
     'image/webp': 'webp'
 };
 
-// Configuration de multer pour le stockage des fichiers en mémoire
 const storage = multer.memoryStorage();
 
 const upload = multer({ 
@@ -24,7 +21,6 @@ const upload = multer({
     }
 }).single('image');
 
-// Middleware combiné pour télécharger et convertir l'image en webp
 const multer_green = (req, res, next) => {
     upload(req, res, (err) => {
         if (err) {

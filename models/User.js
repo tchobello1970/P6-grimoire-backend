@@ -4,12 +4,12 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema({
     email: {
-      type: String, // - adresse e-mail de l’utilisateur [unique]
+      type: String,
       required: true,
       unique: true,
       match: [/.+\@.+\..+/, 'Veuillez entrer une adresse e-mail valide'] // Validation du format d'e-mail
     },
-    password: { // - mot de passe haché de l’utilisateur
+    password: {
       type: String,
       required: true
     }
