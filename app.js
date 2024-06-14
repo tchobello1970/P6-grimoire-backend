@@ -15,7 +15,7 @@ mongoose.connect('mongodb+srv://victorhugo:victorhugo1802@books.uwcylgp.mongodb.
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch((error) => console.error('Connexion à MongoDB échouée !', error));
 
-// Set headers to enable CORS, nécessaire quand les deux serveurs sont différents.
+// Set headers to enable CORS.
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -23,12 +23,10 @@ app.use((req, res, next) => {
     next();
   });
 
-// Middleware pour définir les Routes utilisées pour les requêtes commençant par le premier argument.
+
 app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 
-// Middleware pour servir des fichiers statiques (images) avec multer
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Export the app module
 module.exports = app;
